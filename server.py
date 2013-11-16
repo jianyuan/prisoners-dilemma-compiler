@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 from subprocess2 import Popen, PIPE
 from tempfile import NamedTemporaryFile
 import json
+import tourney.round_robin
 
 app = Flask(__name__)
 
@@ -19,25 +20,22 @@ def check():
 
     resp = jsonify(out)
     resp.status_code = 200
-
     return resp
 
 @app.route('/round_robin', methods=['POST'])
 def round_robin():
-    source_codes = request.form.getlist('source_code[]')
-    source_code_files = []
+    source_codes_in_json = request.form.get('source_codes')
+    source_codes = json.loads(source_codes_in_json)
 
-    for source_code in source_codes:
-        tmp_file = NamedTemporaryFile()
-        tmp_file.write(source_code)
-        tmp_file.seek(0)
-        source_code_files.append(tmp_file)
+    players = []
+    for player_id, source_code in source_codes.iteritems():
+        players.append([int(player_id), source_code])
 
-    for source_code_file in source_code_files:
-        print source_code_file.name
-        source_code_file.close()
+    out = tourney.round_robin.round_robin(iterations=request.form.get('iterations', type=int), players=players)
 
-    return jsonify({'ok': True})
+    resp = jsonify(out)
+    resp.status_code = 200
+    return resp
 
 if __name__ == '__main__':
     app.run(debug=True)
