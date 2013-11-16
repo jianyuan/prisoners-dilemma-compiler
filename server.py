@@ -1,3 +1,4 @@
+from check_source_code import check_source_code
 from flask import Flask, request, jsonify
 from subprocess2 import Popen, PIPE
 from tempfile import NamedTemporaryFile
@@ -11,14 +12,12 @@ def hello():
 
 @app.route('/verify', methods=['POST'])
 def check():
-    sp = Popen(['python', '-c', request.form['source_code']], stdin=PIPE, stdout=PIPE, stderr=PIPE)
-    out, err = sp.communicate(request.form['input'] if 'input' in request.form else None, timeout=5)
+    # sp = Popen(['python', 'check_source_code.py', '-c', request.form['source_code'], '-t', '5'], stdout=PIPE, stderr=PIPE)
+    # out, err = sp.communicate(timeout=10)
 
-    resp = jsonify({
-      'stdout': out,
-      'stderr': err
-    })
+    out = check_source_code(request.form['source_code'])
 
+    resp = jsonify(out)
     resp.status_code = 200
 
     return resp

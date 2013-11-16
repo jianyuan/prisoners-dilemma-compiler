@@ -1,22 +1,17 @@
-import argparse
 from subprocess2 import Popen, PIPE
-import asteval
-import json
 from tempfile import NamedTemporaryFile
+import argparse
+import asteval
 
 parser = argparse.ArgumentParser(description='Check source code of strategy.')
 parser.add_argument('-c', help='source code')
-parser.add_argument('-i', help='STDIN')
-parser.add_argument('-t', type=int, default=5, help='timeout in seconds')
 
-def main():
-    args = parser.parse_args()
-    
+def check_source_code(source_code):
     errors = []
 
     tmp_file = NamedTemporaryFile()
     try:
-        tmp_file.write(args.c)
+        tmp_file.write(source_code)
         tmp_file.seek(0)
 
         sp = Popen(['pylint', '--errors-only', tmp_file.name], stdout=PIPE, stderr=PIPE)
@@ -31,18 +26,22 @@ def main():
 
     if not errors:
         aeval = asteval.Interpreter()
-        aeval(args.c)
+        aeval(source_code)
 
         if 'decide' not in aeval.symtable or not isinstance(aeval.symtable['decide'], asteval.asteval.Procedure):
-            errors.append('The decide(context) function must be implented')
+            errors.append('The `decide(context)` function must be implemented\n')
         elif len(aeval.symtable['decide'].argnames) != 1:
-            errors.append('The decide(context) function must accept a context argument')
+            errors.append('The `decide(context)` function must accept a context argument\n')
 
     output = {
-        'errors': '\n'.join(errors)
+        'errors': ''.join(errors)
     }
 
-    print json.dumps(output)
+    return output
 
 if __name__ == '__main__':
-    main()
+    import json
+
+    args = parser.parse_args()
+    output = check_source_code(args.c)
+    print json.dumps(output)
