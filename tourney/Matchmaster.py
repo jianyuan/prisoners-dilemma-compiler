@@ -10,7 +10,7 @@ class Matchmaster():
         self.player_2 = player_2
         self.points = [0] * 2
         self.crashed = False
-        self.crashers = set()
+        self.crashers = []
         self.moves = []
     
     def start_match(self):
@@ -27,10 +27,12 @@ class Matchmaster():
             except CrashedError as e:
                 self.points[self.get_player_key_from_player_id(e.player_id)] += Game.POINTS_FOR_CRASHING
                 self.crashed = True
-                self.crashers.add(e.player_id)
+                self.crashers.append({'iteration': iteration_count, 'player_id': e.player_id, 'message': e.message})
                 continue
             except InvalidActionError as e:
                 self.points[self.get_player_key_from_player_id(e.player_id)] += Game.POINTS_FOR_INVALID_ACTION
+                self.crashed = True
+                self.crashers.append({'iteration': iteration_count, 'player_id': e.player_id, 'message': 'did not return a correct response'})
                 continue
 
             if Game.is_communication_failed(): move_1 = Game.opposite_move_from(move_1)
@@ -68,6 +70,6 @@ class Matchmaster():
             'points': self.points,
             'iterations': self.iterations,
             'crashed': self.crashed,
-            'crashers': list(self.crashers),
+            'crashers': self.crashers,
             'moves': self.moves
         }
