@@ -31,10 +31,10 @@ class Gamemaster():
             # print '----- Match between ', match, ' begins -----'
             matchmaster = self.start_match(match)
 
-            points = matchmaster.get_result()
-            # print points
+            points = matchmaster.get_points()
+
             outcome = zip(match, points)
-            # print outcome
+
             for player_id, pts in outcome:
                 self.overall_points[player_id] += pts
             # print 'The Score was ', outcome

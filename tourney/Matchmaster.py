@@ -11,28 +11,9 @@ class Matchmaster():
         self.points = [0] * 2
         self.crashed = False
         self.crashers = set()
+        self.moves = []
     
     def start_match(self):
-        self.start_match_iteration()
-        # try:
-        # except Exception as e:
-        #     self.crashed = True
-        #     tb = sys.exc_info()[2]
-        #     stack = traceback.extract_tb(tb)
-        #     crasher = None
-        #     for s in stack:
-        #         print s
-        #         if s[2] == 'decide':
-        #             crasher = s
-        #     # Found the crasher!
-        #     if crasher:
-        #         crasher = os.path.splitext(os.path.basename(crasher[0]))[0]
-        #         self.crasher_id = int(crasher)
-        #         self.points[self.crasher_id] += 1000
-
-    def start_match_iteration(self):
-        # results = []
-
         # Reset player history
         self.player_1.forget()
         self.player_2.forget()
@@ -55,6 +36,8 @@ class Matchmaster():
             if Game.is_communication_failed(): move_1 = Game.opposite_move_from(move_1)
             if Game.is_communication_failed(): move_2 = Game.opposite_move_from(move_2)
 
+            self.moves.append([move_1, move_2])
+
             points_1, points_2 = Game.get_points(move_1, move_2)
 
             self.points[0] += points_1
@@ -67,8 +50,11 @@ class Matchmaster():
 
         # print ', '.join(results)
 
-    def get_result(self):
+    def get_points(self):
         return self.points
+
+    def get_moves(self):
+        return self.moves
 
     def get_player_key_from_player_id(self, player_id):
         if self.player_1.player_id == player_id:
@@ -82,5 +68,6 @@ class Matchmaster():
             'points': self.points,
             'iterations': self.iterations,
             'crashed': self.crashed,
-            'crashers': list(self.crashers)
+            'crashers': list(self.crashers),
+            'moves': self.moves
         }
