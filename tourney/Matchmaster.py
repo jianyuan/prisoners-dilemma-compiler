@@ -67,9 +67,9 @@ class Matchmaster():
     def get_match_data(self):
         return {
             'players': [self.player_1.player_id, self.player_2.player_id],
-            'points': self.points,
+            'points': self.get_points(),
             'iterations': self.iterations,
             'crashed': self.crashed,
             'crashers': self.crashers,
-            'moves': self.moves
+            'moves': self.get_moves(),
         }

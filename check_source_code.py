@@ -34,6 +34,7 @@ def check_source_code(source_code):
             errors.append('The `decide(context)` function must accept a context argument\n')
 
     output = {
+        'success': not bool(errors),
         'errors': ''.join(errors)
     }
 

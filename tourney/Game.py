@@ -26,4 +26,5 @@ def opposite_move_from(move):
     return (DEFECT if move == COOPERATE else COOPERATE)
 
 def is_communication_failed():
-    return random.randint(0, 4) == 0
+    # return random.randint(0, 4) == 0
+    return False
