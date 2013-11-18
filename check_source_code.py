@@ -12,7 +12,7 @@ def check_source_code(source_code):
     tmp_file = NamedTemporaryFile()
     try:
         tmp_file.write(source_code)
-        tmp_file.seek(0)
+        tmp_file.flush()
 
         sp = Popen(['pylint', '--errors-only', tmp_file.name], stdout=PIPE, stderr=PIPE)
         out, err = sp.communicate()
@@ -26,12 +26,12 @@ def check_source_code(source_code):
 
     if not errors:
         aeval = asteval.Interpreter()
-        aeval(source_code)
+        res = aeval(source_code)
 
-        if 'decide' not in aeval.symtable or not isinstance(aeval.symtable['decide'], asteval.asteval.Procedure):
-            errors.append('The `decide(context)` function must be implemented\n')
-        elif len(aeval.symtable['decide'].argnames) != 1:
-            errors.append('The `decide(context)` function must accept a context argument\n')
+        # if 'decide' not in aeval.symtable or not isinstance(aeval.symtable['decide'], asteval.asteval.Procedure):
+        #     errors.append('The `decide(context)` function must be implemented\n')
+        # elif len(aeval.symtable['decide'].argnames) != 1:
+        #     errors.append('The `decide(context)` function must accept a context argument\n')
 
     output = {
         'success': not bool(errors),
