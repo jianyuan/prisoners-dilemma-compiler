@@ -42,5 +42,5 @@ def opposite_move_from(move):
         return move
 
 def is_communication_failed():
-    return random.randint(0, 4) == 0
-    # return False
+    # return random.randint(0, 4) == 0
+    return False

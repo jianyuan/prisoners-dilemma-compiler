@@ -2,9 +2,23 @@ from subprocess2 import Popen, PIPE
 from tempfile import NamedTemporaryFile
 import argparse
 import asteval
+import sys, StringIO, contextlib
 
 parser = argparse.ArgumentParser(description='Check source code of strategy.')
 parser.add_argument('-c', help='source code')
+
+class Data(object):
+    pass
+
+@contextlib.contextmanager
+def capture_stdout():
+    old = sys.stdout
+    capturer = StringIO.StringIO()
+    sys.stdout = capturer
+    data = Data()
+    yield data
+    sys.stdout = old
+    data.result = capturer.getvalue()
 
 def check_ast_errors(error):
     if len(error) > 0:
@@ -14,6 +28,7 @@ def check_ast_errors(error):
     return None
 
 def check_source_code(source_code):
+    res = ''
     errors = []
 
     # aeval = asteval.Interpreter()
@@ -31,7 +46,7 @@ def check_source_code(source_code):
         tmp_file.write(source_code)
         tmp_file.flush()
 
-        sp = Popen(['pylint', '--errors-only', '--msg-template="{line}: {msg} ({symbol})"', tmp_file.name], stdout=PIPE, stderr=PIPE)
+        sp = Popen(['pylint', '--errors-only', '--msg-template="{line}: {msg} ({symbol})"', '--disable=E0602', tmp_file.name], stdout=PIPE, stderr=PIPE)
         out, err = sp.communicate()
 
         # from pylint import epylint as lint
@@ -50,8 +65,11 @@ def check_source_code(source_code):
         tmp_file.close()
 
     if not errors:
-        aeval = asteval.Interpreter()
-        res = aeval(source_code)
+    #     aeval = asteval.Interpreter()
+    #     res = aeval(source_code)
+
+        sp = Popen(['python', 'eval_wrapper.py', '-c', source_code], stdout=PIPE)
+        res = sp.communicate()[0]
 
         # if 'decide' not in aeval.symtable or not isinstance(aeval.symtable['decide'], asteval.asteval.Procedure):
         #     errors.append('The `decide(context)` function must be implemented\n')
@@ -60,6 +78,7 @@ def check_source_code(source_code):
 
     output = {
         'success': not bool(errors),
+        'output': res,
         'errors': ''.join(errors)
     }
 
