@@ -39,7 +39,8 @@ class Player():
             raise CrashedError(self.player_id)
 
         if decision not in Game.VALID_MOVES:
-            raise InvalidActionError(self.player_id)
+            return None
+            # raise InvalidActionError(self.player_id)
 
         return decision
 

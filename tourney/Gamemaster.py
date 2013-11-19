@@ -76,7 +76,7 @@ class Gamemaster():
         return self.overall_points
 
     def get_winner(self):
-        return min(self.overall_points, key=lambda k: self.overall_points[k])
+        return max(self.overall_points, key=lambda k: self.overall_points[k])
 
     def get_match_results(self):
         return self.match_results

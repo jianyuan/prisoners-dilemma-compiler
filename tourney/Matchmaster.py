@@ -29,14 +29,16 @@ class Matchmaster():
                 self.crashed = True
                 self.crashers.append({'iteration': iteration_count, 'player_id': e.player_id, 'message': e.message})
                 continue
-            except InvalidActionError as e:
-                self.points[self.get_player_key_from_player_id(e.player_id)] += Game.POINTS_FOR_INVALID_ACTION
-                self.crashed = True
-                self.crashers.append({'iteration': iteration_count, 'player_id': e.player_id, 'message': 'did not return a correct response'})
-                continue
+            # except InvalidActionError as e:
+            #     self.points[self.get_player_key_from_player_id(e.player_id)] += Game.POINTS_FOR_INVALID_ACTION
+            #     self.crashed = True
+            #     self.crashers.append({'iteration': iteration_count, 'player_id': e.player_id, 'message': 'did not return a correct response'})
+            #     continue
 
-            if Game.is_communication_failed(): move_1 = Game.opposite_move_from(move_1)
-            if Game.is_communication_failed(): move_2 = Game.opposite_move_from(move_2)
+            if Game.is_communication_failed():
+                move_1 = Game.opposite_move_from(move_1)
+            if Game.is_communication_failed():
+                move_2 = Game.opposite_move_from(move_2)
 
             self.moves.append([move_1, move_2])
 
@@ -45,7 +47,7 @@ class Matchmaster():
             self.points[0] += points_1
             self.points[1] += points_2
 
-            # results.append('(' + str(points_1) + ', ' + str(points_2) + ')')
+            # print '(' + str(points_1) + ', ' + str(points_2) + ')'
 
             self.player_1.remember(opponent_move=move_2, my_move=move_1, opponent_points=points_2, my_points=points_1)
             self.player_2.remember(opponent_move=move_1, my_move=move_2, opponent_points=points_1, my_points=points_2)
