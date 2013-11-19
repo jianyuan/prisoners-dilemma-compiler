@@ -12,6 +12,7 @@ class Matchmaster():
         self.crashed = False
         self.crashers = []
         self.moves = []
+        self.move_points = []
     
     def start_match(self):
         # Reset player history
@@ -44,6 +45,8 @@ class Matchmaster():
 
             points_1, points_2 = Game.get_points(move_1, move_2)
 
+            self.move_points.append([points_1, points_2])
+
             self.points[0] += points_1
             self.points[1] += points_2
 
@@ -60,6 +63,9 @@ class Matchmaster():
     def get_moves(self):
         return self.moves
 
+    def get_move_points(self):
+        return self.move_points
+
     def get_player_key_from_player_id(self, player_id):
         if self.player_1.player_id == player_id:
             return 0
@@ -74,4 +80,5 @@ class Matchmaster():
             'crashed': self.crashed,
             'crashers': self.crashers,
             'moves': self.get_moves(),
+            'move_points': self.get_move_points()
         }
