@@ -20,13 +20,13 @@ results = {
 
     # Scoring from: http://lesswrong.com/lw/hmx/prisoners_dilemma_with_visible_source_code/
     (COOPERATE, COOPERATE): (2, 2),
-    (COOPERATE, DEFECT): (3, 0),
-    (COOPERATE, OTHER): (2, 0),
-    (DEFECT, COOPERATE): (0 ,3),
+    (COOPERATE, DEFECT): (0, 3),
+    (COOPERATE, OTHER): (0, 2),
+    (DEFECT, COOPERATE): (3, 0),
     (DEFECT, DEFECT): (1, 1),
-    (DEFECT, OTHER): (0, 1),
-    (OTHER, COOPERATE): (0, 2),
-    (OTHER, DEFECT): (1, 0),
+    (DEFECT, OTHER): (1, 0),
+    (OTHER, COOPERATE): (2, 0),
+    (OTHER, DEFECT): (0, 1),
     (OTHER, OTHER): (0, 0)
 }
 

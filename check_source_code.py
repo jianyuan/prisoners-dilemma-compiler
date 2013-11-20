@@ -69,9 +69,10 @@ def check_source_code(source_code):
     #     aeval = asteval.Interpreter()
     #     res = aeval(source_code)
 
-        wrapper_path = os.path.join(os.path.dirname(__file__), 'eval_wrapper.py')
-        sp = Popen(['python', wrapper_path, '-c', source_code], stdout=PIPE)
-        res = sp.communicate()[0]
+        self.interpreter = importCode(self.source_code, 'player')
+        # wrapper_path = os.path.join(os.path.dirname(__file__), 'eval_wrapper.py')
+        # sp = Popen(['python', wrapper_path, '-c', source_code], stdout=PIPE)
+        # res = sp.communicate()[0]
         # sp = Popen(['python', '-c', source_code], stdout=PIPE)
 
         # if 'decide' not in aeval.symtable or not isinstance(aeval.symtable['decide'], asteval.asteval.Procedure):
