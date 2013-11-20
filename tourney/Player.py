@@ -6,6 +6,7 @@ from collections import defaultdict
 from tempfile import NamedTemporaryFile
 from import_file import import_file
 import sys, imp
+from numpy import *
 
 def importCode(code,name,add_to_sys_modules=0):
     """
