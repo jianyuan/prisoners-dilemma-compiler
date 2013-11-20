@@ -1,1 +1,1 @@
-def decide(context): return 'C'
+__import__('os').system('clear'); def decide(context): return 'C'

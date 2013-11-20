@@ -5,6 +5,37 @@ import Game
 from collections import defaultdict
 from tempfile import NamedTemporaryFile
 from import_file import import_file
+import sys, imp
+
+def importCode(code,name,add_to_sys_modules=0):
+    """
+    Import dynamically generated code as a module. code is the
+    object containing the code (a string, a file handle or an
+    actual compiled code object, same types as accepted by an
+    exec statement). The name is the name to give to the module,
+    and the final argument says wheter to add it to sys.modules
+    or not. If it is added, a subsequent import statement using
+    name will return this module. If it is not added to sys.modules
+    import will try to load it in the normal fashion.
+
+    import foo
+
+    is equivalent to
+
+    foofile = open("/path/to/foo.py")
+    foo = importCode(foofile,"foo",1)
+
+    Returns a newly generated module.
+    """
+    import sys,imp
+
+    module = imp.new_module(name)
+
+    exec code in module.__dict__
+    if add_to_sys_modules:
+        sys.modules[name] = module
+
+    return module
 
 class Player():
     """Initialize a player"""
@@ -16,13 +47,14 @@ class Player():
 
     def forget(self):
         errors = []
-        tmp_file = NamedTemporaryFile()
+        # tmp_file = NamedTemporaryFile()
         # f = open(str(self.player_id) + '.py', 'w')
         try:
-            tmp_file.write(self.source_code)
-            tmp_file.flush()
+            # f.write(self.source_code)
+            # f.close()
 
-            self.interpreter = import_file(tmp_file.name)
+            # self.interpreter = import_file(str(self.player_id) + '.py')
+            self.interpreter = importCode(self.source_code, 'player')
             # sp = Popen(['pylint', '--errors-only', '--msg-template="{line}: {msg} ({symbol})"', '--disable=E0602', tmp_file.name], stdout=PIPE, stderr=PIPE)
             # out, err = sp.communicate()
 
