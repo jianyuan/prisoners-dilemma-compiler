@@ -16,13 +16,13 @@ class Player():
 
     def forget(self):
         errors = []
-        # tmp_file = NamedTemporaryFile()
-        f = open(str(self.player_id) + '.py', 'w')
+        tmp_file = NamedTemporaryFile()
+        # f = open(str(self.player_id) + '.py', 'w')
         try:
-            f.write(self.source_code)
-            f.close()
+            tmp_file.write(self.source_code)
+            tmp_file.flush()
 
-            self.interpreter = import_file(str(self.player_id) + '.py')
+            self.interpreter = import_file(tmp_file.name)
             # sp = Popen(['pylint', '--errors-only', '--msg-template="{line}: {msg} ({symbol})"', '--disable=E0602', tmp_file.name], stdout=PIPE, stderr=PIPE)
             # out, err = sp.communicate()
 
