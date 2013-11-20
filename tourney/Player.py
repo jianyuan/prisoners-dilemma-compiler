@@ -28,7 +28,7 @@ class Player():
 
         try:
             # if 'decide' in self.interpreter.symtable:
-            decision = self.interpreter.symtable['decide'](self.opponent_moves)
+            decision = self.interpreter.symtable['decide'](self.opponent_moves, self.my_moves)
         except Exception as e:
             self.log('Crashed')
         finally:
