@@ -9,13 +9,13 @@ class Player():
     """Initialize a player"""
     def __init__(self, player_id, source_code):
         self.player_id = player_id
-
-        self.interpreter = Interpreter()
-        self.interpreter(source_code)
-
+        self.source_code = source_code
         self.forget()
 
     def forget(self):
+        self.interpreter = Interpreter()
+        self.interpreter(self.source_code)
+
         self.iteration_count = 0
         self.opponent_moves = []
         self.opponent_points = 0
