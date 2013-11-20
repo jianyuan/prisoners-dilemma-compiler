@@ -31,7 +31,11 @@ def round_robin():
     for player_id, source_code in source_codes.iteritems():
         players.append([int(player_id), source_code])
 
-    out = tourney.round_robin.round_robin(iterations=request.form.get('iterations', type=int), players=players)
+    iterations = request.form.get('iterations', type=int)
+    if not 1 <= iterations <= 200:
+        iterations = 100
+
+    out = tourney.round_robin.round_robin(iterations=iterations, players=players)
 
     resp = jsonify(out)
     resp.status_code = 200

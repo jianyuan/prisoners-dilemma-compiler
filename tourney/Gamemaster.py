@@ -5,7 +5,7 @@ import os.path
 import sys
 import traceback
 from collections import defaultdict
-from Player import InvalidActionError, Player
+from Player import Player
 
 class Gamemaster():
     def __init__(self, iterations):
@@ -31,7 +31,7 @@ class Gamemaster():
             # print '----- Match between ', match, ' begins -----'
             matchmaster = self.start_match(match)
 
-            points = matchmaster.get_points()
+            points = matchmaster.points
 
             outcome = zip(match, points)
 

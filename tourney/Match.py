@@ -1,8 +1,6 @@
 from collections import namedtuple
 import Game
 
-MatchContext = namedtuple('MatchContext', 'iteration_count opponent_moves my_moves opponent_points my_points')
-
 class Match():
     def __init__(self, player_1, player_2, _iterations):
         self.player_1 = player_1

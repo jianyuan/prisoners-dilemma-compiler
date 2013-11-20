@@ -1,4 +1,5 @@
 import random
+
 DEFECT = 'D'
 COOPERATE = 'C'
 OTHER = None
