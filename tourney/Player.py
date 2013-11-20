@@ -31,6 +31,8 @@ class Player():
             decision = self.interpreter.symtable['decide'](self.opponent_moves)
         except Exception as e:
             self.log('Crashed')
+        finally:
+            decision = str(decision).upper()
 
         if decision not in Game.VALID_MOVES:
             self.log('Invalid move')
