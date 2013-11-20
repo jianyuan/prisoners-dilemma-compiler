@@ -5,9 +5,6 @@ OTHER = None
 
 VALID_MOVES = [DEFECT, COOPERATE]
 
-POINTS_FOR_CRASHING = 1000
-POINTS_FOR_INVALID_ACTION = 1000
-
 # payoff matrix
 results = {
     # (DEFECT, DEFECT): (2, 2),
