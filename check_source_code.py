@@ -2,6 +2,7 @@ from subprocess2 import Popen, PIPE
 from tempfile import NamedTemporaryFile
 import argparse
 import asteval
+import os
 import sys, StringIO, contextlib
 
 parser = argparse.ArgumentParser(description='Check source code of strategy.')
@@ -68,7 +69,8 @@ def check_source_code(source_code):
     #     aeval = asteval.Interpreter()
     #     res = aeval(source_code)
 
-        sp = Popen(['python', 'eval_wrapper.py', '-c', source_code], stdout=PIPE)
+        wrapper_path = os.path.join(os.path.dirname(__file__), 'eval_wrapper.py')
+        sp = Popen(['python', wrapper_path, '-c', source_code], stdout=PIPE)
         res = sp.communicate()[0]
 
         # if 'decide' not in aeval.symtable or not isinstance(aeval.symtable['decide'], asteval.asteval.Procedure):
