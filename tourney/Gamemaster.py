@@ -1,11 +1,12 @@
+from collections import defaultdict
 from Matchmaster import Matchmaster
+from operator import itemgetter
+from Player import Player
 import itertools
 import os
 import os.path
 import sys
 import traceback
-from collections import defaultdict
-from Player import Player
 
 class Gamemaster():
     def __init__(self, iterations):
@@ -73,7 +74,7 @@ class Gamemaster():
     #         print "Match crashed, but unable to determine crasher"
 
     def get_overall_points(self):
-        return self.overall_points
+        return sorted(self.overall_points.iteritems(), key=itemgetter(1), reverse=True)
 
     def get_winner(self):
         return max(self.overall_points, key=lambda k: self.overall_points[k])
